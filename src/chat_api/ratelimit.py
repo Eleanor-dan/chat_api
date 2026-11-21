@@ -22,7 +22,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
         async with self._lock:
             hits = [ t for t in self._hits.get(client, []) if now - t < 60]
-            if len(hits) > self.limit:
+            if len(hits) >= self.limit:
                 return JSONResponse(
                     status_code=429,
                     content = {"detail": "rate limit exceeded, retry later"},
